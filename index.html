@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#168447">
+<title>Zardo Go | Food Delivery</title>
+<style>
+:root{--green:#168447;--dark:#106638;--lime:#e9f7ee;--ink:#183329;--muted:#6b7d73;--line:#e4ece7;--white:#fff;--shadow:0 12px 35px rgba(20,75,45,.09)}
+*{box-sizing:border-box}body{margin:0;background:#f6faf7;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(5vw,22px);position:sticky;top:0;z-index:5}
+.brand{font-weight:900;font-size:25px;letter-spacing:-1px;color:var(--green)}.brand span{color:#9acb38}.top-actions{display:flex;align-items:center;gap:12px}.pill{border-radius:99px;padding:10px 15px;background:var(--lime);color:var(--dark);font-weight:700}.avatar{width:38px;height:38px;border-radius:50%;background:#dff2e5;color:var(--green);display:grid;place-items:center;font-weight:800}
+main{max-width:1180px;margin:30px auto;padding:0 22px}.role-switch{display:flex;gap:8px;background:#eaf2ec;padding:6px;border-radius:14px;width:max-content;margin-bottom:26px}.role-switch button{padding:11px 18px;border-radius:10px;background:transparent;color:#557063;font-weight:750}.role-switch button.active{background:#fff;color:var(--green);box-shadow:0 3px 12px #1235}
+.page{display:none}.page.active{display:block}.hero{background:linear-gradient(115deg,#137c42,#23a45a);border-radius:22px;padding:34px;color:#fff;display:flex;justify-content:space-between;align-items:center;overflow:hidden;min-height:190px}.hero h1{font-size:clamp(27px,4vw,40px);margin:0 0 8px;letter-spacing:-1.2px}.hero p{margin:0;color:#e4f7e9}.hero-mark{font-size:90px;opacity:.9;margin-right:25px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:28px 0 16px}.section-head h2{font-size:21px;margin:0}.muted{color:var(--muted);font-size:14px}.search{width:min(340px,100%);border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;outline-color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.food-card,.panel,.stat{background:#fff;border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}.food-card{overflow:hidden}.food-art{height:135px;display:grid;place-items:center;font-size:65px;background:linear-gradient(135deg,#e7f5e9,#f6fbf7)}.food-info{padding:16px}.food-info h3{margin:0 0 5px;font-size:17px}.food-info p{margin:0 0 12px;color:var(--muted);font-size:13px}.food-bottom{display:flex;align-items:center;justify-content:space-between;font-weight:800}.price{color:var(--green)}.add,.primary{background:var(--green);color:#fff;border-radius:10px;padding:10px 14px;font-weight:750}.add:hover,.primary:hover{background:var(--dark)}.secondary{background:#edf6ef;color:var(--dark);border-radius:10px;padding:10px 14px;font-weight:750}
+.two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.panel{padding:20px}.panel h3{margin:0 0 16px}.cart-row,.order-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:10px}.cart-row:last-child,.order-row:last-child{border:0}.qty{display:flex;align-items:center;gap:8px}.qty button{background:#eaf5ed;color:var(--green);width:25px;height:25px;border-radius:7px;font-weight:900}.total{display:flex;justify-content:space-between;font-weight:850;margin:17px 0}.full{width:100%}.notice{padding:12px 14px;border-radius:11px;background:#f0f8f2;color:#35644a;font-size:13px;margin-top:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}.stat{padding:18px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:27px;margin-top:7px;color:var(--green)}
+.tag{font-size:11px;font-weight:800;padding:6px 9px;border-radius:99px;background:#e8f6ec;color:#168447;white-space:nowrap}.tag.orange{background:#fff3df;color:#a66a0b}.tag.blue{background:#eaf2ff;color:#3866a4}
+.order-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.order-actions button{padding:8px 11px;border-radius:9px;font-weight:700;background:#edf6ef;color:var(--dark)}.order-actions button.primary{background:var(--green);color:white}
+.driver-card{display:flex;align-items:center;gap:15px}.driver-icon{width:56px;height:56px;border-radius:16px;background:#e7f5eb;display:grid;place-items:center;font-size:28px}.route{margin:20px 0;padding-left:20px;border-left:2px dashed #9acbaa}.route div{position:relative;margin:17px 0}.route div:before{content:"";position:absolute;left:-26px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--green);border:3px solid #e4f4e9}
+.empty{text-align:center;color:var(--muted);padding:25px 5px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#173d2b;color:#fff;padding:12px 18px;border-radius:12px;box-shadow:var(--shadow);display:none;z-index:10}
+footer{text-align:center;color:#83938a;padding:35px 15px;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.hero-mark{font-size:65px;margin:0}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.topbar{padding:0 16px}.top-actions .pill{display:none}main{padding:0 15px;margin:20px auto}.role-switch{width:100%;justify-content:space-between}.role-switch button{padding:10px 11px;font-size:12px}.grid{grid-template-columns:1fr 1fr;gap:10px}.food-art{height:100px;font-size:48px}.food-info{padding:12px}.food-info h3{font-size:14px}.food-info p{font-size:11px}.food-bottom{font-size:13px}.add{padding:8px 10px}.hero{padding:24px 20px;min-height:160px}.hero-mark{font-size:52px}.section-head{align-items:flex-start;gap:10px;flex-direction:column}.search{width:100%}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">zardo<span>go.</span></div>
+  <div class="top-actions"><span class="pill">Good food. Fast delivery.</span><div class="avatar" id="topAvatar">C</div></div>
+</header>
+<main>
+  <nav class="role-switch" aria-label="Choose interface">
+    <button class="active" data-role="customer">Customer</button>
+    <button data-role="restaurant">Restaurant</button>
+    <button data-role="driver">Driver</button>
+  </nav>
+
+  <section class="page active" id="customer">
+    <div class="hero"><div><h1>Your cravings, delivered.</h1><p>Discover local favorites and get them at your doorstep.</p></div><div class="hero-mark">🍔</div></div>
+    <div class="section-head"><div><h2>Popular near you</h2><span class="muted">Fresh picks from local kitchens</span></div><input class="search" id="foodSearch" placeholder="Search food or restaurant..." aria-label="Search food"></div>
+    <div class="two-col">
+      <div><div class="grid" id="foodGrid"></div></div>
+      <aside class="panel"><h3>Your basket <span class="muted" id="cartCount">(0 items)</span></h3><div id="cartItems"><div class="empty">Your basket is waiting for something delicious.</div></div><div class="total"><span>Total</span><span class="price" id="cartTotal">₱0.00</span></div><button class="primary full" onclick="placeOrder()">Place order</button><div class="notice">Demo checkout — no payment will be processed.</div></aside>
+    </div>
+  </section>
+
+  <section class="page" id="restaurant">
+    <div class="hero"><div><h1>Restaurant dashboard</h1><p>Manage incoming orders and keep your kitchen moving.</p></div><div class="hero-mark">👨‍🍳</div></div>
+    <div class="stats"><div class="stat"><small>Today's orders</small><strong id="rOrders">3</strong></div><div class="stat"><small>Preparing</small><strong id="rPreparing">1</strong></div><div class="stat"><small>Completed</small><strong id="rCompleted">2</strong></div></div>
+    <div class="panel"><div class="section-head" style="margin-top:0"><div><h2>Order management</h2><span class="muted">Review and update customer orders</span></div><span class="tag">Zardo Kitchen</span></div><div id="restaurantOrders"></div></div>
+  </section>
+
+  <section class="page" id="driver">
+    <div class="hero"><div><h1>Driver workspace</h1><p>Your next delivery is just a few taps away.</p></div><div class="hero-mark">🛵</div></div>
+    <div class="stats"><div class="stat"><small>Deliveries today</small><strong id="dDeliveries">4</strong></div><div class="stat"><small>Current status</small><strong style="font-size:19px" id="dStatus">Available</strong></div><div class="stat"><small>Demo earnings</small><strong>₱320</strong></div></div>
+    <div class="two-col"><div class="panel"><h3>Assigned delivery</h3><div id="driverOrder"></div></div><div class="panel"><h3>Delivery checklist</h3><div class="route"><div><b>Restaurant</b><br><span class="muted">Zardo Kitchen · Pick up order</span></div><div><b>Customer</b><br><span class="muted">Customer address · Deliver order</span></div></div><div class="notice">This is a front-end demo. Live GPS tracking and real dispatch are not connected.</div></div></div>
+  </section>
+</main>
+<footer>© 2026 Zardo Go · A local food delivery demo</footer>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const foods=[
+ {id:1,name:"Classic Burger",desc:"Juicy patty, lettuce and house sauce",price:129,emoji:"🍔",shop:"Zardo Kitchen"},
+ {id:2,name:"Chicken Rice Meal",desc:"Crispy chicken with savory rice",price:149,emoji:"🍗",shop:"Daily Plate"},
+ {id:3,name:"Pepperoni Pizza",desc:"Cheesy slice with pepperoni",price:199,emoji:"🍕",shop:"Oven & Co."},
+ {id:4,name:"Pancit Canton",desc:"Filipino-style stir-fried noodles",price:99,emoji:"🍜",shop:"Lola's Kusina"},
+ {id:5,name:"Milk Tea",desc:"Creamy classic pearl milk tea",price:89,emoji:"🧋",shop:"Tea Corner"},
+ {id:6,name:"Halo-Halo",desc:"A cool Filipino dessert favorite",price:95,emoji:"🍧",shop:"Sweet Stop"}
+];
+let cart={};let orders=[
+ {id:"#ZG-1042",customer:"Alex R.",items:"2× Classic Burger",total:258,status:"Preparing"},
+ {id:"#ZG-1041",customer:"Jamie L.",items:"1× Chicken Rice Meal",total:149,status:"Ready for pickup"},
+ {id:"#ZG-1040",customer:"Taylor M.",items:"1× Pepperoni Pizza",total:199,status:"Completed"}
+];let deliveryStatus="Available";
+const peso=n=>"₱"+n.toFixed(2);
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display="none",2400)}
+function renderFoods(filter=""){const grid=document.getElementById("foodGrid");const list=foods.filter(f=>(f.name+" "+f.shop).toLowerCase().includes(filter.toLowerCase()));grid.innerHTML=list.map(f=>`<article class="food-card"><div class="food-art">${f.emoji}</div><div class="food-info"><h3>${f.name}</h3><p>${f.shop} · ${f.desc}</p><div class="food-bottom"><span class="price">${peso(f.price)}</span><button class="add" onclick="addToCart(${f.id})">+ Add</button></div></div></article>`).join("")||'<div class="empty">No matching food found.</div>'}
+function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();toast("Added to your basket")}
+function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];renderCart()}
+function renderCart(){const entries=Object.entries(cart);const count=entries.reduce((s,[,q])=>s+q,0);const total=entries.reduce((s,[id,q])=>s+foods.find(f=>f.id==id).price*q,0);document.getElementById("cartCount").textContent=`(${count} items)`;document.getElementById("cartTotal").textContent=peso(total);document.getElementById("cartItems").innerHTML=entries.length?entries.map(([id,q])=>{const f=foods.find(x=>x.id==id);return `<div class="cart-row"><div><b>${f.name}</b><br><span class="muted">${peso(f.price)} each</span></div><div class="qty"><button onclick="changeQty(${id},-1)">−</button><b>${q}</b><button onclick="changeQty(${id},1)">+</button></div></div>`}).join(""):'<div class="empty">Your basket is waiting for something delicious.</div>'}
+function placeOrder(){if(!Object.keys(cart).length){toast("Add an item before placing an order");return}const items=Object.entries(cart).map(([id,q])=>`${q}× ${foods.find(f=>f.id==id).name}`).join(", ");const total=Object.entries(cart).reduce((s,[id,q])=>s+foods.find(f=>f.id==id).price*q,0);orders.unshift({id:"#ZG-"+(1043+orders.length-3),customer:"You",items,total,status:"New order"});cart={};renderCart();renderRestaurant();renderDriver();toast("Demo order placed successfully!")}
+function renderRestaurant(){document.getElementById("restaurantOrders").innerHTML=orders.map((o,i)=>`<div class="order-row"><div><b>${o.id} · ${o.customer}</b><br><span class="muted">${o.items}</span><br><b>${peso(o.total)}</b></div><div style="text-align:right"><span class="tag ${o.status==="Completed"?"blue":o.status==="New order"?"orange":""}">${o.status}</span><div class="order-actions">${o.status!=="Completed"?`<button onclick="advanceOrder(${i})">${o.status==="New order"?"Accept":o.status==="Preparing"?"Mark ready":"Complete"}</button>`:""}</div></div></div>`).join("")||'<div class="empty">No orders yet.</div>';document.getElementById("rOrders").textContent=orders.length;document.getElementById("rPreparing").textContent=orders.filter(o=>o.status==="Preparing").length;document.getElementById("rCompleted").textContent=orders.filter(o=>o.status==="Completed").length}
+function advanceOrder(i){const steps={"New order":"Preparing","Preparing":"Ready for pickup","Ready for pickup":"Completed"};orders[i].status=steps[orders[i].status]||orders[i].status;renderRestaurant();renderDriver();toast("Order status updated")}
+function renderDriver(){const active=orders.find(o=>o.status==="Ready for pickup"||o.status==="Out for delivery");document.getElementById("driverOrder").innerHTML=active?`<div class="driver-card"><div class="driver-icon">🛵</div><div><b>${active.id}</b><br><span class="muted">${active.items}</span></div></div><div class="total"><span>Collect at restaurant</span><span>${peso(active.total)}</span></div><span class="tag">${active.status}</span><div class="order-actions"><button class="primary" onclick="driverAction('${active.id}')">${active.status==="Ready for pickup"?"Confirm pickup":"Confirm delivered"}</button></div>`:'<div class="empty">No delivery assigned right now.<br>You are available for your next task.</div>';document.getElementById("dStatus").textContent=deliveryStatus;document.getElementById("dDeliveries").textContent=4+orders.filter(o=>o.status==="Completed").length-2}
+function driverAction(id){const o=orders.find(x=>x.id===id);if(!o)return;if(o.status==="Ready for pickup"){o.status="Out for delivery";deliveryStatus="On delivery"}else{o.status="Completed";deliveryStatus="Available"}renderRestaurant();renderDriver();toast("Delivery status updated")}
+document.querySelectorAll(".role-switch button").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".role-switch button").forEach(b=>b.classList.toggle("active",b===btn));document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===btn.dataset.role));document.getElementById("topAvatar").textContent=btn.dataset.role==="customer"?"C":btn.dataset.role==="restaurant"?"R":"D"}));
+document.getElementById("foodSearch").addEventListener("input",e=>renderFoods(e.target.value));
+renderFoods();renderCart();renderRestaurant();renderDriver();
+</script>
+</body>
+</html>
